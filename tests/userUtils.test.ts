@@ -31,5 +31,14 @@ describe("User registration tests", () => {
         expect(UserModel.create).toHaveBeenCalled();
     });
 
+    it('should return invalid user name when user is not present',async()=>{
+        const mockUserDetails = { name: 'non_user', password: '1234'};
+        (UserModel.findOne as jest.Mock).mockResolvedValue(null);
+        const response = await request(app).post('/api/user').send(mockUserDetails);
+        expect(response.status).toBe(404);
+        expect(UserModel.findOne).toHaveBeenCalled();
+    })
+
+    
    
 });
