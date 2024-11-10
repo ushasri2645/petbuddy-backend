@@ -1,0 +1,29 @@
+name: PetBuddy-Backend
+
+on:
+  push:
+    branches:
+      - petbuddy-backend-version1
+
+jobs:
+  job-1:
+    name: Starting and Testing app
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install 
+      - name: Build app
+        run : npx tsc
+      - name: Run the tests
+        run: npx jest --coverage
