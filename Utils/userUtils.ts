@@ -13,7 +13,24 @@ namespace UserUtils {
         }
     }
 
-   
+    export async function validateUser(name:string,password:string){
+        try{
+            const user = await UserModel.findOne({name:name})
+            console.log(user)
+            if(!user){
+                return "Invalid User name."
+            }
+            if(user.password!=password){
+                return "Invalid Password"
+            }
+            else{
+                return user
+            }
+        }
+        catch(e){
+            throw new Error(`Error Fetching details of user: ${e}`)
+        }
+    }
 }
 
 export { UserUtils };
