@@ -1,0 +1,37 @@
+{
+  "name": "petbuddy-backend",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "dev": "nodemon script.ts",
+    "test": "jest --coverage --watch"
+  },
+  "keywords": [],
+  "author": "Usha",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-typescript": "^7.24.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.7.0",
+    "@types/supertest": "^6.0.2",
+    "fs": "^0.0.1-security",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}
