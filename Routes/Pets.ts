@@ -20,3 +20,34 @@ petRouter.post('/pets/:username',async(req,res)=>{
     }
 })
 
+petRouter.get('/pet/:username',async(req,res)=>{
+    try{
+        const name = req.params.username
+        const pet = await PetUtils.getPet(name);
+        if(pet==="Pet Not Found"){
+            res.status(404).send("No pet found")
+            return;
+        }
+        res.status(200).send(pet)
+        return;
+
+    }
+    catch(e){
+        res.status(400).send(`Something went wrong ${e}`)
+        return
+    }
+})  
+
+
+petRouter.get('/pets/:username',async(req,res)=>{
+    try{
+        const username = req.params.username
+        const result = await PetUtils.getPets(username)
+        res.status(200).send(result)
+        return;
+    }
+    catch(e){
+        res.status(500).send(e)
+        return;
+    }
+})
