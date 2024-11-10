@@ -72,5 +72,69 @@ describe("Pet Tests", () => {
         });
     });
 
-   
+    describe("Fetch pet tests", () => {
+        it("Should fetch a pet", async () => {
+            const mockPet = { _id: "1", name: "dog", age: 2, gender: "female" };
+            (PetModel.findOne as jest.Mock).mockResolvedValue(mockPet);
+            const response = await request(app).get("/api/pet/dog").send();
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual(mockPet);
+            expect(PetModel.findOne).toHaveBeenCalled();
+        });
+
+        it("Should fetch no pet", async () => {
+            (PetModel.findOne as jest.Mock).mockResolvedValue(null);
+            const response = await request(app).get("/api/pet/dog").send();
+            expect(response.status).toBe(404);
+            expect(PetModel.findOne).toHaveBeenCalled();
+        });
+
+        it("Should throw error while fetching pet", async () => {
+            (PetModel.findOne as jest.Mock).mockRejectedValue(
+                new Error("Error fetching pet details")
+            );
+            const response = await request(app).get("/api/pet/dog").send();
+            expect(response.status).toBe(400);
+            expect(PetModel.findOne).toHaveBeenCalled();
+        });
+    });
+
+    describe("Fetch pets tests", () => {
+        beforeEach(() => {
+            jest.clearAllMocks();
+        });
+
+        it("Should fetch pets for an existing user", async () => {
+            const mockUser = {
+                name: "Usha",
+                pets: [
+                    { _id: "1", name: "Dog1", breed: "Labrador" },
+                    { _id: "2", name: "Dog2", breed: "Beagle" },
+                ],
+            };
+
+            (UserModel.findOne as jest.Mock).mockReturnValueOnce({
+                populate: jest.fn().mockReturnValueOnce({
+                    exec: jest.fn().mockResolvedValue(mockUser),
+                }),
+            });
+
+            const response = await request(app).get("/api/pets/Usha").send();
+            expect(response.status).toBe(200);
+            expect(UserModel.findOne).toHaveBeenCalled();
+        });
+        it("Should return an error when fetching pets fails", async () => {
+            const mockError = new Error("Database connection failed");
+            (UserModel.findOne as jest.Mock).mockReturnValueOnce({
+                populate: jest.fn().mockReturnValueOnce({
+                    exec: jest.fn().mockRejectedValue(mockError),
+                }),
+            });
+
+            const response = await request(app).get("/api/pets/Usha").send();
+            expect(response.status).toBe(500);
+            expect(UserModel.findOne).toHaveBeenCalled();
+            expect(UserModel.findOne).toHaveBeenCalledWith({ name: "Usha" });
+        });
+    });
 });
