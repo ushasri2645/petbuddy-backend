@@ -39,6 +39,29 @@ describe("User registration tests", () => {
         expect(UserModel.findOne).toHaveBeenCalled();
     })
 
+    it('should return invalid credentials',async()=>{
+        const mockUserDetails = { name: 'usha', password: '1234'};
+        (UserModel.findOne as jest.Mock).mockResolvedValue(mockUserDetails);
+        const mockUserDetails2 = { name: 'usha', password: '12342'};
+        const response = await request(app).post('/api/user').send(mockUserDetails2);
+        expect(response.status).toBe(401);
+        expect(UserModel.findOne).toHaveBeenCalled();
+    })
+
+    it('should fetch user',async()=>{
+        const mockUserDetails = { name: 'usha', password: '1234'};
+        (UserModel.findOne as jest.Mock).mockResolvedValue(mockUserDetails);
+        const response = await request(app).post('/api/user').send(mockUserDetails);
+        expect(response.status).toBe(200);
+        expect(UserModel.findOne).toHaveBeenCalled();
+    })
     
+    it('should throw error',async()=>{
+        const mockUserDetails = { name: 'usha'};
+        (UserModel.findOne as jest.Mock).mockRejectedValue(`Error fetching user.`);
+        const response = await request(app).post('/api/user').send(mockUserDetails);
+        expect(response.status).toBe(500);
+        expect(UserModel.findOne).toHaveBeenCalled();
+    })
    
 });
