@@ -19,7 +19,28 @@ namespace PetUtils{
         }
     }
 
-   
+    export async function getPets(username:string) {
+        try{
+            const userWithPets = await UserModel.findOne({ name: username }).populate('pets').exec();
+            return userWithPets?.pets
+        }
+        catch(e){
+            throw new Error(`Error while fetching pets ${e}`)
+        }
+    }
+
+    export async function getPet(name:string){
+        try{
+            const pet = await PetModel.findOne({name:name});
+            if(!pet){
+                return 'Pet Not Found'
+            }
+            return pet
+        }
+        catch(e){
+            throw new Error(`Error fetching pet ${e}`)
+        }
+    } 
 }
 
 export {PetUtils}
