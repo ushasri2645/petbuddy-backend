@@ -25,3 +25,25 @@ userRouter.post('/users',async(req,res)=>{
     }
 })
 
+userRouter.post('/user',async(req,res)=>{
+    try{
+        const {name, password} = req.body;
+        const result = await UserUtils.validateUser(name, password);
+        if(result==="Invalid User name."){
+            res.status(404).json({"message":"User Not found"})
+            return
+        }
+        else if(result==="Invalid Password"){
+            res.status(401).json({"message":"Invalid Credentials. UnAuthorised"})
+            return
+        }
+        else{
+            res.status(200).json({result})
+            return;
+        }
+    }
+    catch(e){
+        res.status(500).json({"error":e})
+        return
+    }
+})
