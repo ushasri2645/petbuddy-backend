@@ -23,6 +23,13 @@ describe("User registration tests", () => {
         expect(UserModel.create).toHaveBeenCalled();
     });
 
-   
+    it('should return a 400 error when user creation fails', async () => {
+        const mockUser = { name: 'Usha', password: '1234', about: 'About me', email: 'ush', contact: '123456789', pets: [] };
+        (UserModel.create as jest.Mock).mockRejectedValue(new Error('Error creating user'));
+        const response = await request(app).post('/api/users').send(mockUser);
+        expect(response.status).toBe(400);
+        expect(UserModel.create).toHaveBeenCalled();
+    });
+
    
 });
