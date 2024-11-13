@@ -27,6 +27,9 @@ const userSchema = new Schema<IUser>({
         type:String,
         required:true
     },
+    image_uri:{
+        type:String,
+    },
     pets:[{
         type:Schema.Types.ObjectId,
         ref:'pets'
