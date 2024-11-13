@@ -62,6 +62,8 @@ export interface IPet extends Document{
     height:number,
     color:string,
     remarks?:string,
+    image_uri?:string,
+    emergencyContact?:number,
     activities:Types.ObjectId[],
     reminders:Types.ObjectId[],
     gallery:string[]
@@ -73,6 +75,7 @@ export interface IUser extends Document{
     address:string,
     about:string,
     email:string,
-    contact:string
+    contact:string,
+    image_uri?:string,
     pets:Types.ObjectId[],
 }
