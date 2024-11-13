@@ -6,7 +6,7 @@ export const userRouter = express.Router();
 
 userRouter.post('/users',async(req,res)=>{
     try{
-        const {name, password, address, about,email,contact}  = req.body;
+        const {name, password, address, about,email,contact,image_uri}  = req.body;
         const result= {
             name,
             password,
@@ -14,6 +14,7 @@ userRouter.post('/users',async(req,res)=>{
             about,
             email,
             contact,
+            image_uri,
             pets: [] as Types.ObjectId[], 
         } as IUser;
         const user = await UserUtils.addUser(result)
@@ -45,5 +46,16 @@ userRouter.post('/user',async(req,res)=>{
     catch(e){
         res.status(500).json({"error":e})
         return
+    }
+})
+
+userRouter.post('/user/profile/:username',async(req,res)=>{
+    try{
+        const {profile} = req.body;
+        const user = await UserUtils.addProfile(req.params.username,profile)
+        res.status(200).send(user)
+    }
+    catch(e){
+        res.status(500).send(`Error updating ${e}`)
     }
 })
