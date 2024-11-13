@@ -34,6 +34,12 @@ const petSchema = new Schema<IPet>({
     remarks:{
         type:String,
     },
+    image_uri:{
+        type:String,
+    },
+    emergencyContact:{
+        type:Number
+    },
     activities:[{
         type:Schema.Types.ObjectId,
         ref:'activities',
