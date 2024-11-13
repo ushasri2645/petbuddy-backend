@@ -63,5 +63,36 @@ describe("User registration tests", () => {
         expect(response.status).toBe(500);
         expect(UserModel.findOne).toHaveBeenCalled();
     })
+    it('should successfully update a user profile', async () => {
+        const mockUser = { name: 'Usha', profile: 'profile_image_url' };
+    
+        (UserModel.findOneAndUpdate as jest.Mock).mockResolvedValue(mockUser);
+    
+        const response = await request(app)
+          .post('/api/user/profile/usha')
+          .send({ profile: 'profile_image_url' });
+    
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(mockUser);
+        expect(UserModel.findOneAndUpdate).toHaveBeenCalled();
+        expect(UserModel.findOneAndUpdate).toHaveBeenCalledWith(
+          { name: 'usha' },
+          { $set: { image_uri: 'profile_image_url' } },
+          { new: true, upsert: false }
+        );
+      });
+      it('should return a 500 error if profile update fails', async () => {
+        const mockError = new Error('Error updating profile');
+    
+        (UserModel.findOneAndUpdate as jest.Mock).mockRejectedValue(mockError);
+    
+        const response = await request(app)
+          .post('/api/user/profile/usha')
+          .send({ profile: 'profile_image_url' });
+    
+        expect(response.status).toBe(500);
+        expect(response.text).toContain('Error updating');
+        expect(UserModel.findOneAndUpdate).toHaveBeenCalled();
+      });
    
 });
