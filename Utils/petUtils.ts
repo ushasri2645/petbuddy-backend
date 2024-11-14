@@ -2,45 +2,69 @@ import { PetModel } from "../Collections/Pets";
 import { UserModel } from "../Collections/User";
 import { IPet } from "../Types/types";
 
-namespace PetUtils{
-    export async function addPet(petDetails:IPet,username:string){
-        try{
-            const user = await UserModel.findOne({name:username})
-            if(!user){
+namespace PetUtils {
+    export async function addPet(petDetails: IPet, username: string) {
+        try {
+            const user = await UserModel.findOne({ name: username });
+            if (!user) {
                 return "No user Found";
             }
-            const pet = await PetModel.create(petDetails)
+            const pet = await PetModel.create(petDetails);
             user.pets.push(pet._id);
             await user.save();
-            console.log("pet created")
-            return pet
-        }catch(e){
-            throw new Error(`Error creating pet: ${e}`)
+            console.log("pet created");
+            return pet;
+        } catch (e) {
+            throw new Error(`Error creating pet: ${e}`);
         }
     }
 
-    export async function getPets(username:string) {
-        try{
-            const userWithPets = await UserModel.findOne({ name: username }).populate('pets').exec();
-            return userWithPets?.pets
-        }
-        catch(e){
-            throw new Error(`Error while fetching pets ${e}`)
+    export async function getPets(username: string) {
+        try {
+            const userWithPets = await UserModel.findOne({ name: username })
+                .populate("pets")
+                .exec();
+            return userWithPets?.pets;
+        } catch (e) {
+            throw new Error(`Error while fetching pets ${e}`);
         }
     }
 
-    export async function getPet(name:string){
-        try{
-            const pet = await PetModel.findOne({name:name});
-            if(!pet){
-                return 'Pet Not Found'
+    export async function getPet(name: string) {
+        try {
+            const pet = await PetModel.findOne({ name: name });
+            if (!pet) {
+                return "Pet Not Found";
             }
-            return pet
+            return pet;
+        } catch (e) {
+            throw new Error(`Error fetching pet ${e}`);
         }
-        catch(e){
-            throw new Error(`Error fetching pet ${e}`)
+    }
+
+    export async function addImage(name: string, path: string) {
+        const pet = await PetModel.findOne({ name: name });
+        if (!pet) {
+            return "No pet found";
+        } else {
+            pet.gallery.push(path);
+            await pet.save();
+            return pet.gallery;
         }
-    } 
+    }
+
+    export async function getImages(name: string) {
+        try {
+            const pet = await PetModel.findOne({ name });
+            if (!pet) {
+                return "No pet found";
+            } else {
+                return pet.gallery;
+            }
+        } catch (e) {
+            throw new Error(`${e}`);
+        }
+    }
 }
 
-export {PetUtils}
+export { PetUtils };
