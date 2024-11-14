@@ -3,11 +3,13 @@ import { IUser } from "../Types/types";
 
 namespace UserUtils {
     export async function addUser(user: any) {
+        console.log("came to add")
         try {
             const newUser = await UserModel.create(user);
             console.log(newUser);
             return newUser;
         } catch (e) {
+            console.log(e)
             throw new Error(`Error creating user: ${e}`);
         }
     }
