@@ -40,6 +40,7 @@ export interface IReminder extends Document{
     startTime:Date,
     endTime:Date,
     type:string,
+    petName?:string,
     date:Date
 }
 
