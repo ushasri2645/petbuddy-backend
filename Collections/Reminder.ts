@@ -19,6 +19,9 @@ const reminderSchema = new Schema<IReminder>({
         type:String,
         required:true
     },
+    petName:{
+        type:String,
+    },
     date:{
         type:Date,
         required:true,
