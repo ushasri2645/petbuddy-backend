@@ -6,10 +6,18 @@ import { IActivity, IReminder } from "../Types/types";
 
 export namespace reminderUtils {
     export async function getReminders(name: string) {
-        const petReminders = await PetModel.findOne({ name })
-            .populate("reminders")
-            .exec();
-        return petReminders?.reminders;
+        try {
+            const pet = await PetModel.findOne({ name });
+            if (!pet) {
+                return("Pet not found");
+            }
+            const petReminders = await PetModel.findOne({ name })
+                .populate("reminders")
+                .exec();
+            return petReminders?.reminders;
+        } catch (e) {
+            throw new Error(`${e}`)
+        }
     }
 
     export async function getAllReminders(name: string) {
