@@ -10,14 +10,12 @@ reminderRouter.post('/pets/reminders/:name',async(req,res)=>{
         const name = req.params.name
         const pet = await PetModel.findOne({name});
         if(!pet){
-            res.status(404).send("Pet not found");
+            res.status(404).send("No pet found");
             return
         }
         const remainder = await ReminderModel.create(req.body)
-        console.log("reminder  created")
         pet.reminders.push(remainder._id)
         await pet.save()
-        console.log("pet saved")
         res.status(201).send(pet);
         return;
     }
