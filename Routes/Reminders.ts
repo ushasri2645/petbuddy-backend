@@ -27,13 +27,15 @@ reminderRouter.post('/pets/reminders/:name',async(req,res)=>{
 reminderRouter.get('/pets/reminders/:name',async(req,res)=>{
     try{
         const name = req.params.name
-        const pet = await PetModel.findOne({name});
-        if(!pet){
-            res.status(404).send("Pet not found");
-            return
+        const result = await reminderUtils.getReminders(name)
+        if(result==="Pet not found"){
+            res.status(404).send(result)
+            return;
         }
-        const reminders = await reminderUtils.getReminders(name)
-        res.status(200).send(reminders)
+        else{
+        res.status(200).send(result)
+        return;
+        }
     }
     catch(e:any)
     {
