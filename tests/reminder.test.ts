@@ -15,7 +15,6 @@ jest.mock("../Collections/User");
 jest.mock("../Collections/Reminder");
 jest.mock("../Collections/Pets");
 
-
 describe("reminderRouter Tests", () => {
     const mockPet = {
         _id: "pet123",
@@ -110,19 +109,36 @@ describe("reminderRouter Tests", () => {
     });
 
     describe("GET /allReminders/:username", () => {
-        it("should return error while fetching all reminders", async () => {
-            (UserModel.findOne as jest.Mock).mockResolvedValueOnce(mockUser);
-            (PetModel.findById as jest.Mock).mockResolvedValueOnce(mockPet);
+        it("should return fetch all reminders", async () => {
+            const mockPet2 = [{
+                _id: "pet123",
+                name: "Buddy",
+                reminders: ["reminder123"],
+                save: jest.fn(),
+            }];
 
-            (PetModel.findOne as jest.Mock).mockReturnValueOnce({
-                populate: jest.fn().mockReturnValueOnce({
-                    exec: jest.fn().mockResolvedValue(mockReminder),
-                }),
-            });
+            const mockReminder2 = [{
+                _id: "reminder123",
+                title: "Reminder 1",
+                startTime: "8:00 AM",
+                endTime: "9:00 AM",
+            }];
+
+            (UserModel.findOne as jest.Mock).mockResolvedValueOnce(mockUser);
+            for (const index in mockUser.pets) {
+                (PetModel.findById as jest.Mock).mockResolvedValueOnce(
+                    mockPet2[index]
+                );
+                (ReminderModel.find as jest.Mock).mockResolvedValue(mockReminder2)
+            }
+            const response = await request(app).get("/api/allReminders/Usha");
+            expect(response.status).toBe(200);
+        });
+
+        it("should throw error while fetching reminders", async()=>{
+            (UserModel.findOne as jest.Mock).mockRejectedValue(new Error(`Data Base Error`));
             const response = await request(app).get("/api/allReminders/Usha");
             expect(response.status).toBe(500);
-        });
+        })
     });
-
-    
 });
