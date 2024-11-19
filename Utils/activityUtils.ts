@@ -5,7 +5,7 @@ import { ActivityModel } from "../Collections/Activity";
 export namespace activityUtils{
     export async function getActivities(name:string){
         try{
-        const pet = await PetModel.findOne({name});
+        const pet = await PetModel.findOne({name}).populate('activities');
         if(!pet){
             return "No pet found"
         }
@@ -15,13 +15,21 @@ export namespace activityUtils{
         }
     }
 
-    export async function addActivity(activityDetails:IActivity,name:string){
+    export async function addActivity(activityDetails:any,name:string){
         try{
         const pet = await PetModel.findOne({name});
         if(!pet){
             return "No pet found"
         }
-        const activity = new ActivityModel(activityDetails);
+        let finalDetails={
+            'title':activityDetails.title,
+            'date':activityDetails.date,
+            'startTime':activityDetails.startTime,
+            'endTime':activityDetails.endTime,
+            status:true,
+            reminder_id:activityDetails._id
+        }
+        const activity = new ActivityModel(finalDetails);
         await activity.save()
         pet.activities.push(activity._id)
         pet.save();
