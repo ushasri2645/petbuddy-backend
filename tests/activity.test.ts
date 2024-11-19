@@ -1,9 +1,8 @@
 import { ActivityModel } from "../Collections/Activity";
 import { PetModel } from "../Collections/Pets";
 import { activityRouter } from "../Routes/Activities";
-import express from 'express'
+import express from "express";
 import request from "supertest";
-
 
 const app = express();
 app.use(express.json());
@@ -11,7 +10,6 @@ app.use("/api", activityRouter);
 
 jest.mock("../Collections/Activity");
 jest.mock("../Collections/Pets");
-
 
 describe("Add activity  Tests", () => {
     beforeEach(() => {
@@ -101,39 +99,32 @@ describe("Get Pet Reminders Tests", () => {
             ],
         };
 
-        (PetModel.findOne as jest.Mock).mockResolvedValue(mockPet);
+        (PetModel.findOne as jest.Mock).mockReturnValueOnce({
+            populate: jest.fn().mockReturnValueOnce({
+                exec: jest.fn().mockResolvedValue(mockPet),
+            }),
+        });
 
-        const response = await request(app).get("/api/activities/Buddy");
-
+        const response = await request(app).get("/api/pets/activities/Buddy");
         expect(response.status).toBe(200);
     });
 
     it("should return 404 if pet is not found", async () => {
-        (PetModel.findOne as jest.Mock).mockResolvedValue(null);
-
-        const response = await request(app).get("/api/activities/Buddy");
-
+        (PetModel.findOne as jest.Mock).mockReturnValueOnce({
+            populate: jest.fn().mockReturnValueOnce(null),
+        });
+        const response = await request(app).get("/api/pets/activities/Buddy");
         expect(response.status).toBe(404);
         expect(response.text).toMatch("No pet found");
     });
 
     it("should return 500 if there is a database error while fetching reminders", async () => {
-        const mockPet = {
-            name: "Buddy",
-            reminders: [
-                {
-                    title: "Vet Appointment",
-                    date: "2024-11-25",
-                    description: "Annual health checkup",
-                },
-            ],
-        };
-
-        (PetModel.findOne as jest.Mock).mockRejectedValue(new Error("Database error"));
-
-        const response = await request(app).get("/api/activities/Buddy");
-
+        (PetModel.findOne as jest.Mock).mockReturnValueOnce({
+            populate: jest.fn().mockRejectedValue({
+                exec: jest.fn().mockRejectedValue(new Error("Database error")),
+            }),
+        });
+        const response = await request(app).get("/api/pets/activities/Buddy");
         expect(response.status).toBe(500);
     });
 });
-
