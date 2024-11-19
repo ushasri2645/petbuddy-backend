@@ -4,7 +4,7 @@ import express from 'express'
 
 export const activityRouter = express.Router();
 
-activityRouter.get('/activities/:petName',async(req,res)=>{
+activityRouter.get('/pets/activities/:petName',async(req,res)=>{
     try{
         const result= await activityUtils.getActivities(req.params.petName)
         if(result==="No pet found"){
