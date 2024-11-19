@@ -45,6 +45,7 @@ describe("Pet Tests", () => {
                 email: "ush",
                 contact: "123456789",
                 pets: [],
+                save:jest.fn()
             };
             (UserModel.findOne as jest.Mock).mockResolvedValue(mockUser);
             (PetModel.create as jest.Mock).mockResolvedValue(mockPet);
@@ -54,6 +55,7 @@ describe("Pet Tests", () => {
             expect(UserModel.findOne).toHaveBeenCalledWith({ name: "Usha" });
             expect(PetModel.create).toHaveBeenCalledWith(mockPet);
             expect(mockUser.pets).toContain(mockPet._id);
+            expect(response.status).toBe(201)
         });
 
         it("Should throw error when something went wrong", async () => {
