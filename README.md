@@ -1,0 +1,1 @@
+PetBuddy is a comprehensive mobile application for pet owners to manage their pets' care and health. It helps users stay organized with features like reminders, activity logs, and health records, ensuring pets receive the best care possible.
