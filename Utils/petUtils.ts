@@ -24,7 +24,10 @@ namespace PetUtils {
             const userWithPets = await UserModel.findOne({ name: username })
                 .populate("pets")
                 .exec();
-            return userWithPets?.pets;
+            if(!userWithPets){
+                return "User With pets not found"
+            }
+            return userWithPets.pets;
         } catch (e) {
             throw new Error(`Error while fetching pets ${e}`);
         }
