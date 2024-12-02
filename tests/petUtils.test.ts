@@ -126,6 +126,24 @@ describe("Pet Tests", () => {
             expect(response.status).toBe(200);
             expect(UserModel.findOne).toHaveBeenCalled();
         });
+        it("Should not fetch pets for an non user", async () => {
+            const mockUser = {
+                name: "Usha",
+                pets: [
+                    { _id: "1", name: "Dog1", breed: "Labrador" },
+                    { _id: "2", name: "Dog2", breed: "Beagle" },
+                ],
+            };
+
+            (UserModel.findOne as jest.Mock).mockReturnValueOnce({
+                populate: jest.fn().mockReturnValueOnce({
+                    exec: jest.fn().mockResolvedValue(null),
+                }),
+            });
+
+            const response = await request(app).get("/api/pets/Usha").send();
+            expect(UserModel.findOne).toHaveBeenCalled();
+        });
         it("Should return an error when fetching pets fails", async () => {
             const mockError = new Error("Database connection failed");
             (UserModel.findOne as jest.Mock).mockReturnValueOnce({
