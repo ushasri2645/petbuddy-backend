@@ -95,7 +95,19 @@ describe("reminderRouter Tests", () => {
             );
             expect(response.status).toBe(200);
         });
-
+        it("should not return pet reminders for a non pet", async () => {
+            (PetModel.findOne as jest.Mock).mockResolvedValueOnce(mockPet);
+            (PetModel.findOne as jest.Mock).mockReturnValueOnce({
+                populate: jest.fn().mockReturnValueOnce({
+                    exec: jest.fn().mockResolvedValue(null),
+                }),
+            });
+            const response = await request(app).get(
+                "/api/pets/reminders/Buddy"
+            );
+            expect(PetModel.findOne).toHaveBeenCalled()
+        });
+        
         it("should return 500 if an error occurs fetching reminders", async () => {
             (PetModel.findOne as jest.Mock).mockResolvedValue(mockPet);
             (ReminderModel.find as jest.Mock).mockRejectedValue(
@@ -134,6 +146,11 @@ describe("reminderRouter Tests", () => {
             const response = await request(app).get("/api/allReminders/Usha");
             expect(response.status).toBe(200);
         });
+        it("should not return pets if no user is found",async()=>{
+            (UserModel.findOne as jest.Mock).mockResolvedValue(null);
+            const response = await request(app).get("/api/allReminders/Usha");
+            expect(UserModel.findOne).toHaveBeenCalled()
+        })
 
         it("should throw error while fetching reminders", async()=>{
             (UserModel.findOne as jest.Mock).mockRejectedValue(new Error(`Data Base Error`));
