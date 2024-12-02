@@ -58,4 +58,3 @@ const petSchema = new Schema<IPet>({
 
 
 export const PetModel = config.model<IPet>('pets',petSchema)
-console.log("Pets Model Created");

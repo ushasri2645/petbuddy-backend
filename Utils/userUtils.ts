@@ -6,10 +6,8 @@ namespace UserUtils {
         console.log("came to add")
         try {
             const newUser = await UserModel.create(user);
-            console.log(newUser);
             return newUser;
         } catch (e) {
-            console.log(e)
             throw new Error(`Error creating user: ${e}`);
         }
     }
@@ -37,7 +35,6 @@ namespace UserUtils {
             { $set: { image_uri: profile } },
             { new: true, upsert: false }
         );
-        console.log(`Profile image updated for user: ${name}`);
         return user;
     }
 }

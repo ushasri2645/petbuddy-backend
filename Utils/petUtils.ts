@@ -12,7 +12,6 @@ namespace PetUtils {
             const pet = await PetModel.create(petDetails);
             user.pets.push(pet._id);
             await user.save();
-            console.log("pet created");
             return pet;
         } catch (e) {
             throw new Error(`Error creating pet: ${e}`);

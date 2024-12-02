@@ -30,4 +30,3 @@ const reminderSchema = new Schema<IReminder>({
     
 
 export const ReminderModel = config.model<IReminder>('reminders',reminderSchema);
-console.log("Reminders model created");

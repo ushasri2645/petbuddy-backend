@@ -38,23 +38,4 @@ export namespace activityUtils{
             throw new Error(`${e}`)
         }
     }
-
-    // export async function triggerActivity(reminder:IReminder,name:string){
-    //     const pet = await PetModel.findOne({name});
-    //     if(!pet){
-    //         return "No pet found"
-    //     }
-    //     const result = {
-    //         "title":reminder.title,
-    //         "date":reminder.date,
-    //         "startTime":reminder.startTime,
-    //         "endTime":reminder.endTime,
-    //         "status":true,
-    //         "reminder_id":reminder._id
-    //     } as IActivity
-    //     const activity =  new ActivityModel(result);
-    //     await activity.save();
-    //     pet.activities.push(activity._id);
-    //     await pet.save();
-    // }
 }

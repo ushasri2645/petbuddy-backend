@@ -37,4 +37,3 @@ const userSchema = new Schema<IUser>({
 })
 
 export const UserModel = config.model<IUser>('users',userSchema);
-console.log("User Model created");

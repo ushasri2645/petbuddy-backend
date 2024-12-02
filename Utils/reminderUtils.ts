@@ -38,7 +38,6 @@ export namespace reminderUtils {
             let reminder = await ReminderModel.find({
               petName: petRecord.name,
             });
-            console.log(reminder);
             if (reminder) {
               reminders.push(...reminder);
             }

@@ -116,4 +116,3 @@ export const ServiceModel = config.model<IServicesType>(
     "services",
     servicesSchema
 );
-console.log("Service Model Created");

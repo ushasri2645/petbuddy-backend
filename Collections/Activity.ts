@@ -31,4 +31,3 @@ const activitySchema = new Schema<IActivity>({
 })
     
 export const ActivityModel = config.model<IActivity>('activities',activitySchema);
-console.log("Activity model created");
