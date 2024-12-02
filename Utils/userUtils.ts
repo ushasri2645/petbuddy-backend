@@ -3,7 +3,6 @@ import { IUser } from "../Types/types";
 
 namespace UserUtils {
     export async function addUser(user: any) {
-        console.log("came to add")
         try {
             const newUser = await UserModel.create(user);
             return newUser;
@@ -15,7 +14,6 @@ namespace UserUtils {
     export async function validateUser(name: string, password: string) {
         try {
             const user = await UserModel.findOne({ name: name });
-            console.log(user);
             if (!user) {
                 return "Invalid User name.";
             }
