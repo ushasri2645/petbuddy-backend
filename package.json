@@ -4,7 +4,7 @@
   "main": "script.js",
   "scripts": {
     "dev": "nodemon script.ts",
-    "test": "jest --coverage --watch"
+    "test": "jest --coverage"
   },
   "keywords": [],
   "author": "Usha",
