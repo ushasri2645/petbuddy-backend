@@ -1,10 +1,10 @@
-import { Schema } from "mongoose";
+import mongoose, {  Schema } from "mongoose";
 import {
     IBoardingServiceType,
     IServiceType,
     IServicesType,
 } from "../Types/types";
-import { config } from "../Config/Config";
+// import { config } from "../Config/Config";
 
 const serviceSchema = new Schema<IServiceType>({
     name: {
@@ -112,7 +112,7 @@ const servicesSchema = new Schema<IServicesType>({
         default: [],
     },
 });
-export const ServiceModel = config.model<IServicesType>(
+export const ServiceModel = mongoose.model<IServicesType>(
     "services",
     servicesSchema
 );

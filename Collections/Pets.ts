@@ -1,5 +1,5 @@
-import { Schema} from "mongoose";
-import { config } from "../Config/Config";
+import mongoose, { Schema} from "mongoose";
+// import { config } from "../Config/Config";
 import { IPet } from "../Types/types";
 
 const petSchema = new Schema<IPet>({
@@ -57,4 +57,4 @@ const petSchema = new Schema<IPet>({
 })
 
 
-export const PetModel = config.model<IPet>('pets',petSchema)
+export const PetModel = mongoose.model<IPet>('pets',petSchema)

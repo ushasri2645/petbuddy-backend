@@ -1,6 +1,6 @@
-import { Schema} from "mongoose";
+import mongoose, { Schema} from "mongoose";
 import { IReminder } from "../Types/types";
-import { config } from "../Config/Config";
+// import { config } from "../Config/Config";
 
 const reminderSchema = new Schema<IReminder>({
     title:{
@@ -29,4 +29,4 @@ const reminderSchema = new Schema<IReminder>({
 })
     
 
-export const ReminderModel = config.model<IReminder>('reminders',reminderSchema);
+export const ReminderModel = mongoose.model<IReminder>('reminders',reminderSchema);

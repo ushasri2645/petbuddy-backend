@@ -1,6 +1,6 @@
-import { Schema, Types} from "mongoose";
+import mongoose, { Schema, Types} from "mongoose";
 import { IUser } from "../Types/types";
-import { config } from "../Config/Config";
+// import { config } from "../Config/Config";
 
 const userSchema = new Schema<IUser>({
     name:{
@@ -36,4 +36,4 @@ const userSchema = new Schema<IUser>({
     }]
 })
 
-export const UserModel = config.model<IUser>('users',userSchema);
+export const UserModel = mongoose.model<IUser>('users',userSchema);

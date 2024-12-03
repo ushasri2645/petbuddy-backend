@@ -1,6 +1,6 @@
-import { Schema} from "mongoose";
+import mongoose, { Schema} from "mongoose";
 import { IActivity } from "../Types/types";
-import { config } from "../Config/Config";
+// import { config } from "../Config/Config";
 
 const activitySchema = new Schema<IActivity>({
     title:{
@@ -30,4 +30,4 @@ const activitySchema = new Schema<IActivity>({
     } 
 })
     
-export const ActivityModel = config.model<IActivity>('activities',activitySchema);
+export const ActivityModel = mongoose.model<IActivity>('activities',activitySchema);
