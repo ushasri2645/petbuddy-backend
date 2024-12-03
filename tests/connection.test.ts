@@ -1,32 +1,31 @@
 import mongoose from "mongoose";
-jest.mock("mongoose");
+import { connectToDatabase } from "../Config/Config";
 
-describe("MongoDB Connection", () => {
-    beforeAll(() => {
-        console.log = jest.fn();
-    });
-    it("should connect successfully", () => {
-        (mongoose.createConnection as jest.Mock).mockReturnValue({
-            readyState: 1, 
-        });
-        const { config } = require("./../Config/Config");
+jest.mock('mongoose',()=>({
+    connect:jest.fn()
+}))
+const consoleSPy = jest.spyOn(console,'log').mockImplementation(()=>{});
 
-        expect(mongoose.createConnection).toHaveBeenCalledWith("mongodb://localhost/petBuddyDB");
-        expect(config.readyState).toBe(1); 
-        expect(console.log).toHaveBeenCalledWith("Connected");
-    });
+describe("Test for data base connection",()=>{
+    afterEach(()=>{
+        jest.clearAllMocks();
+        consoleSPy.mockRestore()
+    })
 
-    it("should fail to connect and throw an error", () => {
-        const errorMessage = "Database connection failed";
-        (mongoose.createConnection as jest.Mock).mockImplementation(() => {
-            throw new Error(errorMessage);
-        });
-        try {
-            const { connectToDatabase } = require("./../Config/Config");
-            connectToDatabase();  
-        } catch (error: any) {
-            expect(error.message).toBe("Database connection failed: " + errorMessage);
+
+    it("should create succesfull db connection",async()=>{
+        (mongoose.connect as jest.Mock).mockResolvedValue(null);
+        await connectToDatabase()
+        expect(mongoose.connect).toHaveBeenCalledWith('mongodb://localhost/petBuddyDataBase')
+    })
+    it('should throw error if db connection fails',async()=>{
+        (mongoose.connect as jest.Mock).mockRejectedValue('Db Connection failed');
+        try{
+            await connectToDatabase();
         }
-    });
-
+        catch(e:any){
+            expect(e.message).toBe("Database connection failed")
+        }
+        
+    })
 })
