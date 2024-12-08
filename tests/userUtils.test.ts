@@ -1,6 +1,7 @@
 import { userRouter } from "../Routes/User";
 import request from "supertest";
 import express from "express";
+import bcrypt from "bcryptjs";
 import { UserModel } from "../Collections/User";
 
 const app = express();
@@ -49,7 +50,8 @@ describe("User registration tests", () => {
     })
 
     it('should fetch user',async()=>{
-        const mockUserDetails = { name: 'usha', password: '1234'};
+        const mockUserDetails = { name: 'usha', password: '$2a$10$ZZ36i3fdoMxPARYSc6WZOOsHsoz0RZH9VPbBekm7QZNCdHPrPuDfK'};
+        (bcrypt.compare as jest.Mock).mockResolvedValue(true);
         (UserModel.findOne as jest.Mock).mockResolvedValue(mockUserDetails);
         const response = await request(app).post('/api/user').send(mockUserDetails);
         expect(response.status).toBe(200);
