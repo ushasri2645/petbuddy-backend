@@ -1,7 +1,6 @@
 import { UserModel } from "../Collections/User";
 import bcrypt from "bcryptjs";
 import { IUser } from "../Types/types";
-jest.mock('bcryptjs')
 
 namespace UserUtils {
   export async function addUser(user: any) {

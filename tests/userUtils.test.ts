@@ -9,6 +9,7 @@ app.use(express.json());
 app.use("/api", userRouter);
 
 jest.mock('../Collections/User');
+jest.mock('bcryptjs')
 
 describe("User registration tests", () => {
     beforeEach(() => {
