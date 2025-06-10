@@ -4,6 +4,7 @@
   "main": "script.js",
   "scripts": {
     "dev": "nodemon script.ts",
+    "start": "ts-node script.ts",
     "test": "jest --coverage"
   },
   "keywords": [],
