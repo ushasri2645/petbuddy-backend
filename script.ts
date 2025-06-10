@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8080;
 const runServer = async() =>{ 
   try{
     await connectToDatabase();
-    app.listen(PORT, '0.0.0.0', () => console.log(`Server on 0.0.0.0:${PORT}`));
+    app.listen(PORT, () => console.log(`Server on 0.0.0.0:${PORT}`));
   }
   catch(e){
     console.log("Error")
